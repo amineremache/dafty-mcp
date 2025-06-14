@@ -4,7 +4,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\""
   },
   "keywords": [],
@@ -14,11 +15,12 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.1",
     "axios": "^1.9.0",
-    "zod": "^3.25.51",
-    "cheerio": "^1.0.0-rc.12"
+    "cheerio": "^1.0.0-rc.12",
+    "zod": "^3.25.51"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.35",
     "typescript": "^5.8.3",
-    "@types/cheerio": "^0.22.35"
+    "vitest": "^3.2.3"
   }
 }
