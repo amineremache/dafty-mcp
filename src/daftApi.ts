@@ -1,3 +1,16 @@
+// ==========================================================================================
+// IMPORTANT DISCLAIMER:
+// The Daft.ie API (v3) used by the `get_rental_property_details` tool in this file
+// requires an API key for authentication. This key is typically not available for
+// public or general developer use.
+//
+// To inquire about API access, refer to the official Daft.ie API documentation:
+// https://api.daft.ie/doc/v3/#using
+//
+// Without a valid API key (set as the DAFT_API_KEY environment variable),
+// the `get_rental_property_details` tool WILL LIKELY FAIL with authorization errors (e.g., 401/403).
+// The scraping-based `search_rental_properties` tool does NOT rely on this API key.
+// ==========================================================================================
 import axios, { AxiosInstance, AxiosError } from 'axios'; // AxiosInstance is not used here, can be removed if daftApi is not exported/used elsewhere
 import type { TextContent } from "@modelcontextprotocol/sdk/types.js";
 // Import the Zod-inferred type from index.ts (or a future shared types.ts)

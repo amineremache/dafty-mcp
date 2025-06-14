@@ -1,4 +1,36 @@
 #!/usr/bin/env node
+import * as fs from 'node:fs';
+import * as path from 'node:path';
+
+// --- BEGIN DEBUG LOGGING SETUP ---
+const logsDir = path.join(process.cwd(), 'logs');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
+const timestampStr = new Date().toISOString().replace(/:/g, '-').replace(/\..+/, '');
+const logFileName = `${timestampStr}_daft_mcp_debug.log`;
+const logFilePath = path.join(logsDir, logFileName);
+const logStream = fs.createWriteStream(logFilePath, { flags: 'a' });
+const originalConsoleError = console.error;
+const originalConsoleLog = console.log; // Also capture console.log for completeness
+
+console.error = (...args: any[]) => {
+  const timestamp = new Date().toISOString();
+  const message = args.map(arg => typeof arg === 'string' ? arg : JSON.stringify(arg)).join(' ');
+  logStream.write(`[${timestamp}] [ERROR] ${message}\n`);
+  originalConsoleError.apply(console, args); // Also log to original stderr
+};
+
+console.log = (...args: any[]) => {
+  const timestamp = new Date().toISOString();
+  const message = args.map(arg => typeof arg === 'string' ? arg : JSON.stringify(arg)).join(' ');
+  logStream.write(`[${timestamp}] [LOG] ${message}\n`);
+  originalConsoleLog.apply(console, args); // Also log to original stdout
+};
+
+console.error(`[index.ts] Logging initialized. Output will be written to: ${logFilePath}`);
+// --- END DEBUG LOGGING SETUP ---
+
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -16,7 +48,7 @@ const server = new McpServer({
 
 // Define input Zod schemas
 export const SearchRentalPropertiesInputSchema = z.object({
-  location: z.string().describe("Location (e.g., Dublin, Cork, specific address)"),
+  location: z.string().optional().describe("Location (e.g., Dublin, Cork, specific address) - Defaults to all Ireland if omitted"),
   min_price: z.number().optional().describe("Minimum price per month"),
   max_price: z.number().optional().describe("Maximum price per month"),
   num_beds: z.number().optional().describe("Number of bedrooms (for scraping, 1 means 1-2 beds)"),
@@ -40,9 +72,16 @@ server.tool(
   async (extra: any): Promise<{ content: TextContent[]; isError?: boolean }> => {
     const parseResult = SearchRentalPropertiesInputSchema.safeParse(extra);
     if (!parseResult.success) {
-      console.error("[index.ts] search_rental_properties: Invalid parameters received by tool registration:", parseResult.error.flatten());
+      const errorPayload = {
+        errorType: "InputValidationError",
+        toolName: "search_rental_properties",
+        message: "Invalid parameters received.",
+        details: parseResult.error.flatten().fieldErrors,
+        receivedParams: extra
+      };
+      console.error(`[index.ts] search_rental_properties: ${errorPayload.message}`, errorPayload.details);
       return {
-        content: [{ type: "text", text: "Invalid parameters: " + JSON.stringify(parseResult.error.flatten().fieldErrors) }],
+        content: [{ type: "text", text: JSON.stringify(errorPayload, null, 2) }],
         isError: true,
       };
     }
@@ -57,9 +96,16 @@ server.tool(
   async (extra: any): Promise<{ content: TextContent[]; isError?: boolean }> => {
     const parseResult = GetRentalPropertyDetailsInputSchema.safeParse(extra);
     if (!parseResult.success) {
-      console.error("[index.ts] get_rental_property_details: Invalid parameters received by tool registration:", parseResult.error.flatten());
+      const errorPayload = {
+        errorType: "InputValidationError",
+        toolName: "get_rental_property_details",
+        message: "Invalid parameters received.",
+        details: parseResult.error.flatten().fieldErrors,
+        receivedParams: extra
+      };
+      console.error(`[index.ts] get_rental_property_details: ${errorPayload.message}`, errorPayload.details);
       return {
-        content: [{ type: "text", text: "Invalid parameters: " + JSON.stringify(parseResult.error.flatten().fieldErrors) }],
+        content: [{ type: "text", text: JSON.stringify(errorPayload, null, 2) }],
         isError: true,
       };
     }

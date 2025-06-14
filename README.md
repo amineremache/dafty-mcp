@@ -1,11 +1,12 @@
 # Daft.ie MCP Server
 
-This is an MCP (Model Context Protocol) server designed to interact with the Daft.ie API, specifically focusing on renting functionalities.
+This is an MCP (Model Context Protocol) server designed to interact with Daft.ie, primarily for searching rental properties via web scraping.
 
 ## Features
 
-*   **Search Rental Properties:** Search for rental listings based on various criteria like location, price range, number of bedrooms, and property type.
-*   **Get Rental Property Details:** Retrieve detailed information about a specific rental property using its unique ID.
+*   **Search Rental Properties:** Search for rental listings based on various criteria like location, price range, number of bedrooms, and property type. This tool uses web scraping.
+*   **Get Rental Property Details:** Attempts to retrieve detailed information about a specific rental property using its unique ID.
+    *   **Note:** This tool relies on the official Daft.ie API (v3) which requires an API key. Without a valid key (set via the `DAFT_API_KEY` environment variable), this tool will likely fail. Refer to `src/daftApi.ts` for more details and a link to the Daft.ie API documentation.
 
 ## Setup
 
@@ -22,7 +23,16 @@ This is an MCP (Model Context Protocol) server designed to interact with the Daf
     ```bash
     npm run build
     ```
-4.  **Configure MCP Settings:**
+4.  **Testing (Optional but Recommended):**
+    The project uses Vitest for unit testing. To run tests:
+    ```bash
+    npm test
+    ```
+    To run tests in watch mode:
+    ```bash
+    npm run test:watch
+    ```
+5.  **Configure MCP Settings:**
     Add the following configuration to your MCP settings file (e.g., `~/.config/Code/User/globalStorage/rooveterinaryinc.roo-cline/settings/mcp_settings.json`):
 
     ```json

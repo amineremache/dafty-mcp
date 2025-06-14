@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2025-06-14
+
+### Added
+- **Unit Testing:**
+    - Integrated Vitest for unit testing.
+    - Added test scripts (`test`, `test:watch`) to `package.json`.
+    - Created comprehensive unit tests for `parsePrice`, `parseBeds`, and `slugify` helper functions in `daftScraper.ts`.
+- **Logging & Error Handling:**
+    - MCP tools now return structured JSON error messages for input validation failures (`src/index.ts`) and scraping errors (`src/daftScraper.ts`), providing more context.
+    - Enhanced server-side `console.error` logs to include these structured error details.
+    - Added detailed `console.warn` logging in `daftScraper.ts` when primary CSS selectors fail and fallbacks are used.
+    - Implemented more specific logging for pagination termination conditions in `daftScraper.ts`.
+- **API Disclaimer:**
+    - Added a prominent disclaimer at the top of `src/daftApi.ts` regarding the API key requirement for the `get_rental_property_details` tool.
+
+### Changed
+- **Scraper Enhancements (`daftScraper.ts`):**
+    - `parsePrice` function now returns a structured object `{ value: number | null, type: "numeric" | "on_application" | "unknown" }` to explicitly handle different price types. Code using `parsedPrice` updated accordingly.
+    - Refined client-side location filtering: for "Ringsend" searches, it now includes checks for synonymous/nearby terms like "Irishtown", "Grand Canal Dock", "Dublin 4", and "Dublin 2".
+    - Implemented a retry mechanism with delays in the `fetchPageHTML` function for increased robustness.
+- `.gitignore`: Added `package-lock.json`.
+
+### Fixed
+- Corrected `slugify` function in `daftScraper.ts` to properly handle leading/trailing spaces by adding `.trim()`.
+- Ensured helper functions (`parsePrice`, `parseBeds`, `slugify`) in `daftScraper.ts` are correctly exported for testing.
+- Configured Vitest (`vitest.config.ts`) to only run tests from the `src` directory, resolving issues with tests in the `build` directory.
+
+
 ## [0.2.0] - 2025-06-12
 
 ### Added
