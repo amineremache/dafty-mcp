@@ -17,7 +17,7 @@ const originalConsoleLog = console.log; // Also capture console.log for complete
 console.error = (...args: any[]) => {
   const timestamp = new Date().toISOString();
   const message = args.map(arg => typeof arg === 'string' ? arg : JSON.stringify(arg)).join(' ');
-  logStream.write(`[${timestamp}] [ERROR] ${message}\n`);
+  logStream.write(`[${timestamp}] [INFO] ${message}\n`);
   originalConsoleError.apply(console, args); // Also log to original stderr
 };
 
@@ -43,7 +43,7 @@ import { handleGetRentalPropertyDetailsApi } from "./daftApi.js";
 // Create an MCP server
 const server = new McpServer({
   name: "daft-ie-mcp",
-  version: "0.1.1"
+  version: "0.2.2"
 });
 
 // Define input Zod schemas

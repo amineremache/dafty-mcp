@@ -1,8 +1,34 @@
 import { describe, it, expect } from 'vitest';
 // @ts-ignore: Vitest will handle the .js extension in module resolution
-import { parsePrice, parseBeds, slugify } from '../daftScraper.js';
+import { parsePrice, parseBeds, slugify, extractLatLng } from '../daftScraper.js';
 
 describe('daftScraper helpers', () => {
+  describe('extractLatLng', () => {
+    it('should extract lat and long from satellite view link', () => {
+      const html = `<div class="sc-eb305aa9-39 fhfxAx"><h3 class="sc-eb305aa9-6 sc-eb305aa9-37 KkiWU fCUHAZ">Map</h3><div class="sc-eb305aa9-35 jfAOAq"><div class="sc-d17e3613-6 jUPFjn button-container"><a aria-label="Satellite View" href="https://www.google.com/maps?t=k&q=loc:53.292643842768456+-6.1705297173718066" data-tracking="LaunchSatellite" data-testid="satelite-button" target="_blank" rel="noreferrer noopener" class="sc-d17e3613-5 dTSeGm"><div visibility="visible" class="sc-d17e3613-0 peOLg"><div data-testid="" class="sc-d17e3613-3 kDuilh"><svg viewBox="0 0 24 24" width="1em" height="1em"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 12v7.917c0 .874-.71 1.583-1.583 1.583H4.083c-.874 0-1.583-.71-1.583-1.583V4.083c0-.874.71-1.583 1.583-1.583H12M15.5 2.5h6v6M10.5 13.5l11-11"></path></g></svg></div> <span class="sc-d17e3613-1 iTzdLu">Satellite View</span></div></a></div><div class="sc-d17e3613-6 jUPFjn button-container"><a aria-label="Street View" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=53.292643842768456,-6.1705297173718066" data-tracking="LaunchStreet" data-testid="streetview-button" target="_blank" rel="noreferrer noopener" class="sc-d17e3613-5 dTSeGm"><div visibility="visible" class="sc-d17e3613-0 peOLg"><div data-testid="" class="sc-d17e3613-3 kDuilh"><svg viewBox="0 0 24 24" width="1em" height="1em"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 12v7.917c0 .874-.71 1.583-1.583 1.583H4.083c-.874 0-1.583-.71-1.583-1.583V4.083c0-.874.71-1.583 1.583-1.583H12M15.5 2.5h6v6M10.5 13.5l11-11"></path></g></svg></div> <span class="sc-d17e3613-1 iTzdLu">Street View</span></div></a></div></div></div>`;
+      expect(extractLatLng(html, 'a[data-testid="satelite-button"]')).toEqual({ lat: 53.292643842768456, lng: -6.1705297173718066 });
+    });
+
+    it('should extract lat and long from street view link', () => {
+      const html = `<div class="sc-eb305aa9-39 fhfxAx"><h3 class="sc-eb305aa9-6 sc-eb305aa9-37 KkiWU fCUHAZ">Map</h3><div class="sc-eb305aa9-35 jfAOAq"><div class="sc-d17e3613-6 jUPFjn button-container"><a aria-label="Satellite View" href="https://www.google.com/maps?t=k&q=loc:53.292643842768456+-6.1705297173718066" data-tracking="LaunchSatellite" data-testid="satelite-button" target="_blank" rel="noreferrer noopener" class="sc-d17e3613-5 dTSeGm"><div visibility="visible" class="sc-d17e3613-0 peOLg"><div data-testid="" class="sc-d17e3613-3 kDuilh"><svg viewBox="0 0 24 24" width="1em" height="1em"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 12v7.917c0 .874-.71 1.583-1.583 1.583H4.083c-.874 0-1.583-.71-1.583-1.583V4.083c0-.874.71-1.583 1.583-1.583H12M15.5 2.5h6v6M10.5 13.5l11-11"></path></g></svg></div> <span class="sc-d17e3613-1 iTzdLu">Satellite View</span></div></a></div><div class="sc-d17e3613-6 jUPFjn button-container"><a aria-label="Street View" href="https://www.google.com/maps/@?api=1&map_action=pano&viewpoint=53.292643842768456,-6.1705297173718066" data-tracking="LaunchStreet" data-testid="streetview-button" target="_blank" rel="noreferrer noopener" class="sc-d17e3613-5 dTSeGm"><div visibility="visible" class="sc-d17e3613-0 peOLg"><div data-testid="" class="sc-d17e3613-3 kDuilh"><svg viewBox="0 0 24 24" width="1em" height="1em"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 12v7.917c0 .874-.71 1.583-1.583 1.583H4.083c-.874 0-1.583-.71-1.583-1.583V4.083c0-.874.71-1.583 1.583-1.583H12M15.5 2.5h6v6M10.5 13.5l11-11"></path></g></svg></div> <span class="sc-d17e3613-1 iTzdLu">Street View</span></div></a></div></div></div>`;
+      expect(extractLatLng(html, 'a[data-testid="streetview-button"]')).toEqual({ lat: 53.292643842768456, lng: -6.1705297173718066 });
+    });
+
+    it('should return null if link is not found', () => {
+      const html = `<div></div>`;
+      expect(extractLatLng(html, 'a')).toBeNull();
+    });
+
+    it('should return null if href is missing', () => {
+      const html = `<a></a>`;
+      expect(extractLatLng(html, 'a')).toBeNull();
+    });
+
+    it('should return null if lat/lng are not in the href', () => {
+      const html = `<a href="https://www.google.com/maps"></a>`;
+      expect(extractLatLng(html, 'a')).toBeNull();
+    });
+  });
   describe('parsePrice', () => {
     it('should parse valid monthly price strings', () => {
       expect(parsePrice('€2,500 per month')).toEqual({ value: 2500, type: "numeric" });
