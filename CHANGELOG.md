@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.3] - 2025-06-18
+
+### Added
+- **Developer Tooling:**
+    - Added ESLint and Prettier for code linting and formatting.
+    - Added Winston for structured logging.
+- **Configuration:**
+    - Centralized all configuration into a new `src/config.ts` file.
+
+### Changed
+- **Project Structure:**
+    - Refactored source code into a more modular structure with `services`, `utils`, `config`, and `types` directories.
+- **Scraping Enhancements:**
+    - The `search_rental_properties` tool now accepts an array of locations.
+    - Improved parsing logic for property details.
+
+## [0.2.2] - 2025-06-17
+
+### Added
+- **Scraper Enhancements:**
+    - Implemented a two-pass scraping system to visit each property's detail page, enabling the extraction of more accurate data like coordinates and BER ratings.
+    - Added support for parsing multi-unit developments.
+
+### Fixed
+- **Build Script:**
+    - Corrected the build script in `package.json` to handle the new project structure.
+
 ## [0.2.1] - 2025-06-14
 
 ### Added
