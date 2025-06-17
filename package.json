@@ -1,12 +1,14 @@
 {
-  "name": "daft-ie-mcp",
+  "name": "dafty-mcp",
   "version": "1.0.0",
   "type": "module",
-  "main": "index.js",
+  "main": "build/src/index.js",
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "build": "tsc && node -e \"require('fs').chmodSync('build/src/index.js', '755')\""
+    "build": "tsc",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix"
   },
   "keywords": [],
   "author": "",
@@ -16,11 +18,19 @@
     "@modelcontextprotocol/sdk": "^1.12.1",
     "axios": "^1.9.0",
     "cheerio": "^1.0.0-rc.12",
+    "winston": "^3.17.0",
     "zod": "^3.25.51"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.35",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.0",
+    "prettier": "^3.5.3",
     "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.1",
     "vitest": "^3.2.3"
   }
 }

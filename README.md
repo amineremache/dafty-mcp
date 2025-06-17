@@ -1,4 +1,8 @@
-# Daft.ie MCP Server
+# Dafty MCP Server
+
+## Disclaimer
+
+**This is an independent, open-source project and is not affiliated with, endorsed, or sponsored by Daft.ie.** This tool is provided for educational and experimental purposes only. The data is scraped from a publicly available website, and its use is subject to the terms of service of that website. The author assumes no liability for the use or misuse of this software. Please use it responsibly and ethically.
 
 This is an MCP (Model Context Protocol) server designed to interact with Daft.ie, primarily for searching rental properties via web scraping.
 
@@ -13,7 +17,7 @@ This is an MCP (Model Context Protocol) server designed to interact with Daft.ie
 1.  **Clone the repository:**
     ```bash
     git clone [YOUR_GITHUB_REPO_URL]
-    cd daft-ie-mcp
+    cd dafty-mcp
     ```
 2.  **Install dependencies:**
     ```bash
@@ -38,9 +42,9 @@ This is an MCP (Model Context Protocol) server designed to interact with Daft.ie
     ```json
     {
       "mcpServers": {
-        "daft-ie-mcp": {
+        "dafty-mcp": {
           "command": "node",
-          "args": ["~/daft-ie-mcp/build/index.js"],
+          "args": ["~/dafty-mcp/build/index.js"],
           "env": {},
           "disabled": false,
           "alwaysAllow": []
@@ -53,14 +57,14 @@ This is an MCP (Model Context Protocol) server designed to interact with Daft.ie
 
 Once the MCP server is configured and running, you can use the following tools:
 
-*   `use_mcp_tool` with `server_name: "daft-ie-mcp"` and `tool_name: "search_rental_properties"`
-*   `use_mcp_tool` with `server_name: "daft-ie-mcp"` and `tool_name: "get_rental_property_details"`
+*   `use_mcp_tool` with `server_name: "dafty-mcp"` and `tool_name: "search_rental_properties"`
+*   `use_mcp_tool` with `server_name: "dafty-mcp"` and `tool_name: "get_rental_property_details"`
 
 **Example: Searching for rental properties in Dublin**
 
 ```xml
 <use_mcp_tool>
-<server_name>daft-ie-mcp</server_name>
+<server_name>dafty-mcp</server_name>
 <tool_name>search_rental_properties</tool_name>
 <arguments>
 {
@@ -77,7 +81,7 @@ Once the MCP server is configured and running, you can use the following tools:
 
 ```xml
 <use_mcp_tool>
-<server_name>daft-ie-mcp</server_name>
+<server_name>dafty-mcp</server_name>
 <tool_name>get_rental_property_details</tool_name>
 <arguments>
 {
