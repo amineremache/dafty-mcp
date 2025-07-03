@@ -6,10 +6,10 @@ export const SearchRentalPropertiesInputSchema = z.object({
     .union([z.string(), z.array(z.string())])
     .optional()
     .describe('Location or locations (e.g., Dublin, Cork, specific address) - Defaults to all Ireland if omitted'),
-  min_price: z.number().optional().describe('Minimum price per month'),
-  max_price: z.number().optional().describe('Maximum price per month'),
-  num_beds: z.number().optional().describe('Number of bedrooms (for scraping, 1 means 1-2 beds)'),
-  property_type: z.string().optional().describe('Type of property (e.g., apartment, house)'),
+  minPrice: z.number().optional().describe('Minimum price per month'),
+  maxPrice: z.number().optional().describe('Maximum price per month'),
+  numBeds: z.number().optional().describe('Number of bedrooms (for scraping, 1 means 1-2 beds)'),
+  propertyType: z.string().optional().describe('Type of property (e.g., apartment, house)'),
 });
 
 // Inferred type from the schema
@@ -23,6 +23,14 @@ export const GetRentalPropertyDetailsInputSchema = z.object({
 // Inferred type from the schema
 export type GetRentalPropertyDetailsParams = z.infer<typeof GetRentalPropertyDetailsInputSchema>;
 
+// Schema for the parse_query tool
+export const ParseQueryInputSchema = z.object({
+  query: z.string().describe('The natural language query to parse'),
+});
+
+// Inferred type from the schema
+export type ParseQueryParams = z.infer<typeof ParseQueryInputSchema>;
+
 // Generic interfaces for parsed data
 export interface ParsedPriceResult {
   value: number | null;
@@ -33,4 +41,37 @@ export interface ParsedBedsResult {
   min: number;
   max: number;
   isStudio?: boolean;
+}
+
+export interface Unit {
+  address: string;
+  url: string;
+  id: string;
+  priceString: string;
+  parsedPrice: number | null;
+  priceType: 'numeric' | 'on_application' | 'unknown';
+  bedsString: string;
+  parsedBeds: ParsedBedsResult | null;
+  bathsString: string;
+  propertyTypeString: string;
+  ber?: string;
+  tagline: string;
+}
+
+export interface Property {
+  address: string;
+  url: string;
+  id: string;
+  tagline: string;
+  priceString: string;
+  parsedPrice: number | null;
+  priceType: 'numeric' | 'on_application' | 'unknown';
+  bedsString: string;
+  parsedBeds: ParsedBedsResult | null;
+  bathsString: string;
+  propertyTypeString: string;
+  ber?: string;
+  latitude?: number;
+  longitude?: number;
+  units?: Unit[];
 }

@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import { dublinAreas } from '../data/locations.js';
 import type { ParsedPriceResult, ParsedBedsResult } from '../types.js';
 
 // Helper function to parse price strings (e.g., "€2,500 per month", "€500 per week")
@@ -181,14 +182,21 @@ export const generateDaftLocationSlug = (locationString: string): string => {
     .split(',')
     .map((p) => slugify(p.trim()))
     .filter((p) => p);
+
   if (parts.length === 2) {
     // Handles "Carrigaline, Cork" -> "carrigaline-cork"
     return parts.join('-');
   }
 
   const singlePartSlug = slugify(locationString);
+
   // Handles "Dublin 2" -> "dublin-2-dublin"
   if (/^dublin-\d+$/.test(singlePartSlug)) {
+    return `${singlePartSlug}-dublin`;
+  }
+
+  // Handles areas within Dublin like "Sandymount" -> "sandymount-dublin"
+  if (dublinAreas.includes(singlePartSlug)) {
     return `${singlePartSlug}-dublin`;
   }
 
