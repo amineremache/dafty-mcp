@@ -1,18 +1,22 @@
 # Dafty MCP Server
 
+[![License](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
+![Dafty MCP Banner](assets/dafty-mcp.png)
+
 ## Disclaimer
 
 **This is an independent, open-source project and is not affiliated with, endorsed, or sponsored by Daft.ie.** This tool is provided for educational and experimental purposes only. The data is scraped from a publicly available website, and its use is subject to the terms of service of that website. The author assumes no liability for the use or misuse of this software. Please use it responsibly and ethically.
 
 This is an MCP (Model Context Protocol) server designed to interact with Daft.ie, primarily for searching rental properties via web scraping.
 
-## Features
+## ✨ Features
 
-*   **Search Rental Properties:** Search for rental listings based on various criteria like location, price range, number of bedrooms, and property type. This tool uses web scraping.
-*   **Get Rental Property Details:** Attempts to retrieve detailed information about a specific rental property using its unique ID.
+*   **🔍 Search Rental Properties:** Search for rental listings based on various criteria like location, price range, number of bedrooms, and property type. This tool uses web scraping.
+*   **📄 Get Rental Property Details:** Attempts to retrieve detailed information about a specific rental property using its unique ID.
     *   **Note:** This tool relies on the official Daft.ie API (v3) which requires an API key. Without a valid key (set via the `DAFT_API_KEY` environment variable), this tool will likely fail. Refer to `src/daftApi.ts` for more details and a link to the Daft.ie API documentation.
 
-## Setup
+## 🛠️ Setup
 
 1.  **Clone the repository:**
     ```bash
@@ -53,7 +57,7 @@ This is an MCP (Model Context Protocol) server designed to interact with Daft.ie
     }
     ```
 
-## Usage
+## 🚀 Usage
 
 Once the MCP server is configured and running, you can use the following tools:
 
